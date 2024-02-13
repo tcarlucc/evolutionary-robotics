@@ -2,7 +2,7 @@ import pybullet as p
 import pybullet_data
 import pyrosim.pyrosim as pyrosim
 import time
-import numpy
+import numpy as np
 
 physicsClient = p.connect(p.GUI)
 p.setAdditionalSearchPath(pybullet_data.getDataPath())
@@ -12,7 +12,7 @@ planeId = p.loadURDF("plane.urdf")
 p.loadSDF("world.sdf")
 pyrosim.Prepare_To_Simulate(robotId)
 
-backLegSensorValues = numpy.zeros(10000)
+backLegSensorValues = np.zeros(10000)
 for i in range(1000):
     p.stepSimulation()
 
@@ -21,5 +21,6 @@ for i in range(1000):
     time.sleep(1/60)
     # print(i)   Removed for the sensor statement above
 
+np.save("data/backLegSensorValues.npy", backLegSensorValues)
 p.disconnect()
 print(backLegSensorValues)
