@@ -4,6 +4,8 @@ import pyrosim.pyrosim as pyrosim
 import time
 import numpy as np
 
+ITERATIONS = 1000
+
 physicsClient = p.connect(p.GUI)
 p.setAdditionalSearchPath(pybullet_data.getDataPath())
 p.setGravity(0, 0, -9.8)
@@ -12,8 +14,8 @@ planeId = p.loadURDF("plane.urdf")
 p.loadSDF("world.sdf")
 pyrosim.Prepare_To_Simulate(robotId)
 
-backLegSensorValues = np.zeros(10000)
-for i in range(1000):
+backLegSensorValues = np.zeros(ITERATIONS)
+for i in range(ITERATIONS):
     p.stepSimulation()
 
     backLegSensorValues[i] = pyrosim.Get_Touch_Sensor_Value_For_Link("BackLeg")
