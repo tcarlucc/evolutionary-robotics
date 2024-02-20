@@ -7,13 +7,13 @@ import random
 
 ITERATIONS = 1000
 
-front_leg_amplitude = np.pi/3
-front_leg_frequency = 20
-front_leg_phaseOffset = 0
+frontLegAmplitude = np.pi/3
+frontLegFrequency = 20
+frontLegPhaseOffset = np.pi/4
 
-back_leg_amplitude = np.pi/4
-back_leg_frequency = 10
-back_leg_phaseOffset = np.pi/4
+backLegAmplitude = np.pi/3
+backLegFrequency = 10
+backLegPhaseOffset = 0
 
 physicsClient = p.connect(p.GUI)
 p.setAdditionalSearchPath(pybullet_data.getDataPath())
@@ -26,10 +26,10 @@ pyrosim.Prepare_To_Simulate(robotId)
 backLegSensorValues = np.zeros(ITERATIONS)
 frontLegSensorValues = np.zeros(ITERATIONS)
 
-back_leg_target_angles = back_leg_amplitude * np.sin(back_leg_frequency * np.linspace(0, 2*np.pi, ITERATIONS) +
-                                                     front_leg_phaseOffset)
-front_leg_target_angles = front_leg_amplitude * np.sin(front_leg_frequency * np.linspace(0, 2*np.pi, ITERATIONS) +
-                                                       back_leg_phaseOffset)
+backLegTargetValues = backLegAmplitude * np.sin(backLegFrequency * np.linspace(0, 2*np.pi, ITERATIONS)
+                                                + backLegPhaseOffset)
+frontLegTargetValues = frontLegAmplitude * np.sin(frontLegFrequency * np.linspace(0, 2*np.pi, ITERATIONS)
+                                                  + frontLegPhaseOffset)
 
 for i in range(ITERATIONS):
     p.stepSimulation()
@@ -38,14 +38,14 @@ for i in range(ITERATIONS):
     frontLegSensorValues[i] = pyrosim.Get_Touch_Sensor_Value_For_Link("FrontLeg")
 
     pyrosim.Set_Motor_For_Joint(bodyIndex=robotId, jointName=b"Torso_BackLeg", controlMode=p.POSITION_CONTROL,
-                                targetPosition=back_leg_target_angles[i], maxForce=50)
+                                targetPosition=backLegTargetValues[i], maxForce=50)
     pyrosim.Set_Motor_For_Joint(bodyIndex=robotId, jointName=b"Torso_FrontLeg", controlMode=p.POSITION_CONTROL,
-                                targetPosition=front_leg_target_angles[i], maxForce=50)
+                                targetPosition=frontLegTargetValues[i], maxForce=50)
 
     time.sleep(1/60)
     # print(i)   Removed for the sensor statement above
 
 np.save("data/backLegSensorValues.npy", backLegSensorValues)
 np.save("data/frontLegSensorValues.npy", frontLegSensorValues)
-np.save("data/targetAngles.npy", targetAngles)
+#np.save("data/targetAngles.npy", targetAngles)
 p.disconnect()
