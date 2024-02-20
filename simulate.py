@@ -3,6 +3,7 @@ import pybullet_data
 import pyrosim.pyrosim as pyrosim
 import time
 import numpy as np
+import random
 
 ITERATIONS = 1000
 
@@ -23,9 +24,9 @@ for i in range(ITERATIONS):
     frontLegSensorValues[i] = pyrosim.Get_Touch_Sensor_Value_For_Link("FrontLeg")
 
     pyrosim.Set_Motor_For_Joint(bodyIndex=robotId, jointName=b"Torso_BackLeg", controlMode=p.POSITION_CONTROL,
-                                targetPosition=np.pi/4, maxForce=500)
+                                targetPosition=(random.random()-0.5)*np.pi, maxForce=50)
     pyrosim.Set_Motor_For_Joint(bodyIndex=robotId, jointName=b"Torso_FrontLeg", controlMode=p.POSITION_CONTROL,
-                                targetPosition=-np.pi/4, maxForce=500)
+                                targetPosition=(random.random()-0.5)*np.pi, maxForce=50)
 
     time.sleep(1/60)
     # print(i)   Removed for the sensor statement above
