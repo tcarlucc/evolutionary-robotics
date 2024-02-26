@@ -38,3 +38,6 @@ class SIMULATION:
 
             time.sleep(1 / 60)
             # print(i)   Removed for the sensor statement above
+
+    def __del__(self):
+        p.disconnect()
