@@ -1,19 +1,10 @@
+import constants as c
 import pybullet as p
 import pybullet_data
 import pyrosim.pyrosim as pyrosim
 import time
 import numpy as np
 import random
-
-ITERATIONS = 1000
-
-frontLegAmplitude = np.pi/3
-frontLegFrequency = 20
-frontLegPhaseOffset = np.pi/4
-
-backLegAmplitude = np.pi/3
-backLegFrequency = 10
-backLegPhaseOffset = 0
 
 physicsClient = p.connect(p.GUI)
 p.setAdditionalSearchPath(pybullet_data.getDataPath())
@@ -23,15 +14,15 @@ planeId = p.loadURDF("plane.urdf")
 p.loadSDF("world.sdf")
 pyrosim.Prepare_To_Simulate(robotId)
 
-backLegSensorValues = np.zeros(ITERATIONS)
-frontLegSensorValues = np.zeros(ITERATIONS)
+backLegSensorValues = np.zeros(c.ITERATIONS)
+frontLegSensorValues = np.zeros(c.ITERATIONS)
 
-backLegTargetValues = backLegAmplitude * np.sin(backLegFrequency * np.linspace(0, 2*np.pi, ITERATIONS)
-                                                + backLegPhaseOffset)
-frontLegTargetValues = frontLegAmplitude * np.sin(frontLegFrequency * np.linspace(0, 2*np.pi, ITERATIONS)
-                                                  + frontLegPhaseOffset)
+backLegTargetValues = c.backLegAmplitude * np.sin(c.backLegFrequency * np.linspace(0, 2*np.pi, c.ITERATIONS)
+                                                + c.backLegPhaseOffset)
+frontLegTargetValues = c.frontLegAmplitude * np.sin(c.frontLegFrequency * np.linspace(0, 2*np.pi, c.ITERATIONS)
+                                                  + c.frontLegPhaseOffset)
 
-for i in range(ITERATIONS):
+for i in range(c.ITERATIONS):
     p.stepSimulation()
 
     backLegSensorValues[i] = pyrosim.Get_Touch_Sensor_Value_For_Link("BackLeg")
