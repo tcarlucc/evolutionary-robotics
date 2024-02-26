@@ -1,11 +1,13 @@
 import constants as c
+import numpy as np
 import pybullet as p
 import pybullet_data
 import pyrosim.pyrosim as pyrosim
+from simulation import SIMULATION
 import time
-import numpy as np
 import random
 
+'''
 physicsClient = p.connect(p.GUI)
 p.setAdditionalSearchPath(pybullet_data.getDataPath())
 p.setGravity(0, 0, -9.8)
@@ -40,3 +42,5 @@ np.save("data/backLegSensorValues.npy", backLegSensorValues)
 np.save("data/frontLegSensorValues.npy", frontLegSensorValues)
 #np.save("data/targetAngles.npy", targetAngles)
 p.disconnect()
+'''
+simulation = SIMULATION()
