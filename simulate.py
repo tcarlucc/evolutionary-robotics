@@ -44,4 +44,4 @@ np.save("data/frontLegSensorValues.npy", frontLegSensorValues)
 p.disconnect()
 '''
 simulation = SIMULATION()
-simulation.run()
+simulation.Run()
