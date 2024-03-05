@@ -36,3 +36,4 @@ class ROBOT:
 
     def Think(self):
         self.nn.Print()
+        self.nn.Update()

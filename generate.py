@@ -1,5 +1,11 @@
 import pyrosim.pyrosim as pyrosim
 
+
+def Create_World():
+    pyrosim.Start_SDF("world.sdf")
+    pyrosim.Send_Cube(name="Box", pos=[-2, 2, 0.5], size=[1, 1, 1])
+    pyrosim.End()
+
 def Generate_Body():
     pyrosim.Start_URDF("body.urdf")
     pyrosim.Send_Cube(name="Torso", pos=[0, 0, 1.5], size=[1, 1, 1])
@@ -13,7 +19,10 @@ def Generate_Body():
 def Generate_Brain():
     pyrosim.Start_NeuralNetwork("brain.nndf")
     pyrosim.Send_Sensor_Neuron(name=0, linkName="Torso")
+    pyrosim.Send_Sensor_Neuron(name=1, linkName="BackLeg")
+    pyrosim.Send_Sensor_Neuron(name=2, linkName="FrontLeg")
     pyrosim.End()
 
+Create_World()
 Generate_Body()
 Generate_Brain()
