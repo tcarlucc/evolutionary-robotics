@@ -5,4 +5,6 @@ Learning how to build and evolve simulated robots to perform a variety of tasks.
 
 Each branch is associated with an assignment.
 
-Assignments can be found at https://www.reddit.com/r/ludobots/wiki/installation/
+Assignments can be found [here](https://www.reddit.com/r/ludobots/wiki/installation/).
+
+Deliverables can be found [here](https://www.youtube.com/playlist?list=PLjP8SIESqGxkFOJcTzQwaoRhby7JkXoZs).
