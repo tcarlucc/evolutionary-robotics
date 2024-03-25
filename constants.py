@@ -10,4 +10,4 @@ backLegAmplitude = np.pi/3
 backLegFrequency = 10
 backLegPhaseOffset = 0
 
-numberOfGenerations = 2
+numberOfGenerations = 10
