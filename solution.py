@@ -2,17 +2,18 @@ import numpy as np
 import pyrosim.pyrosim as pyrosim
 import random
 import os
+import sys
 
 class SOLUTION:
     def __init__(self):
         self.weights = (np.random.rand(3, 2) * 2) - 1
         self.fitness = None
 
-    def Evaluate(self):
+    def Evaluate(self, directOrGUI):
         self.Create_World()
         self.Generate_Body()
         self.Generate_Brain()
-        os.system('py simulate.py')
+        os.system(f'py simulate.py {directOrGUI}')
         fitnessFile = open("fitness.txt", "r")
         self.fitness = float(fitnessFile.read())
         fitnessFile.close()
