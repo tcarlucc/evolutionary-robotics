@@ -3,6 +3,7 @@ import pyrosim.pyrosim as pyrosim
 import random
 import os
 import sys
+import time
 
 class SOLUTION:
     def __init__(self):
@@ -13,7 +14,7 @@ class SOLUTION:
         self.Create_World()
         self.Generate_Body()
         self.Generate_Brain()
-        os.system(f'py simulate.py {directOrGUI}')
+        os.system(f'start /B py simulate.py {directOrGUI}')
         fitnessFile = open("fitness.txt", "r")
         self.fitness = float(fitnessFile.read())
         fitnessFile.close()
@@ -22,6 +23,8 @@ class SOLUTION:
         pyrosim.Start_SDF("world.sdf")
         pyrosim.Send_Cube(name="Box", pos=[-2, 2, 0.5], size=[1, 1, 1])
         pyrosim.End()
+        while not os.path.exists("world.sdf"):
+            time.sleep(0.01)
 
     def Generate_Body(self):
         pyrosim.Start_URDF("body.urdf")
@@ -33,6 +36,8 @@ class SOLUTION:
                            type="revolute")
         pyrosim.Send_Cube(name="FrontLeg", pos=[-0.5, 0, -0.5], size=[1, 1, 1])
         pyrosim.End()
+        while not os.path.exists("body.urdf"):
+            time.sleep(0.01)
 
     def Generate_Brain(self):
         pyrosim.Start_NeuralNetwork("brain.nndf")
@@ -41,6 +46,8 @@ class SOLUTION:
         pyrosim.Send_Sensor_Neuron(name=2, linkName="FrontLeg")
         pyrosim.Send_Motor_Neuron(name=3, jointName="Torso_BackLeg")
         pyrosim.Send_Motor_Neuron(name=4, jointName="Torso_FrontLeg")
+        while not os.path.exists("brain.nndf"):
+            time.sleep(0.01)
 
         for currentRow in range(0, 3):
             for currentColumn in range(0, 2):
