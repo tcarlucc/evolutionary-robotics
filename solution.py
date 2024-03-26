@@ -6,15 +6,16 @@ import sys
 import time
 
 class SOLUTION:
-    def __init__(self):
+    def __init__(self, myID):
         self.weights = (np.random.rand(3, 2) * 2) - 1
         self.fitness = None
+        self.myID = myID
 
     def Evaluate(self, directOrGUI):
         self.Create_World()
         self.Generate_Body()
         self.Generate_Brain()
-        os.system(f'start /B py simulate.py {directOrGUI}')
+        os.system(f'start /B py simulate.py {directOrGUI} {str(self.myID)}')
         fitnessFile = open("fitness.txt", "r")
         self.fitness = float(fitnessFile.read())
         fitnessFile.close()
@@ -40,7 +41,7 @@ class SOLUTION:
             time.sleep(0.01)
 
     def Generate_Brain(self):
-        pyrosim.Start_NeuralNetwork("brain.nndf")
+        pyrosim.Start_NeuralNetwork(f"brain{self.myID}.nndf")
         pyrosim.Send_Sensor_Neuron(name=0, linkName="Torso")
         pyrosim.Send_Sensor_Neuron(name=1, linkName="BackLeg")
         pyrosim.Send_Sensor_Neuron(name=2, linkName="FrontLeg")
@@ -60,3 +61,6 @@ class SOLUTION:
         row = random.randint(0, 2)
         col = random.randint(0, 1)
         self.weights[row, col] = (random.random() * 2) - 1
+
+    def Set_ID(self, myID):
+        self.myID = myID
