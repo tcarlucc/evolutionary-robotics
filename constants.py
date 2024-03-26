@@ -11,3 +11,4 @@ backLegFrequency = 10
 backLegPhaseOffset = 0
 
 numberOfGenerations = 10
+populationSize = 2
