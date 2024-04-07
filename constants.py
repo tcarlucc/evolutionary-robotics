@@ -10,14 +10,14 @@ backLegAmplitude = np.pi/3
 backLegFrequency = 10
 backLegPhaseOffset = 0
 
-numberOfGenerations = 1
-populationSize = 1
+numberOfGenerations = 5
+populationSize = 5
 
 numSensorNeurons = 8
 numMotorNeurons = 8
 
 motorJointRange = 0.4
 
-fluidDensity = 1.225
+fluidDensity = 2.5
 dragCoefficient = 1.5
 

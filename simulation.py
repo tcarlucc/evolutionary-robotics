@@ -7,8 +7,6 @@ import time
 import numpy as np
 import pyrosim.pyrosim as pyrosim
 
-DRAG_COEF = 3.8
-
 
 class SIMULATION:
     def __init__(self, directOrGUI, solutionID):
@@ -21,7 +19,6 @@ class SIMULATION:
         p.setGravity(0, 0, 0)  # z = -9.8 to enable gravity
         self.world = WORLD()
         self.robot = ROBOT(solutionID)
-        #print(p.getLinkState(self.robot.robotId, 2, 1))  # << use in drag calculation
 
     def Run(self):
         for i in range(c.ITERATIONS):
@@ -45,5 +42,7 @@ class SIMULATION:
         self.robot.Get_Fitness()
 
     def Calculate_Drag(self, velocity_vector):
+        # Drag calculation from: F. Corucci (2018) "Evolving Soft Locomotion"
+        # 0.2 is Area of each link
         return 0.5 * c.fluidDensity * 0.2 * c.dragCoefficient * velocity_vector ** 2
 
