@@ -1,14 +1,34 @@
+import constants
 from pyrosim.neuron  import NEURON
 
 from pyrosim.synapse import SYNAPSE
 
+import pybullet as p
+
+import constants as c
+
+import numpy as np
+
+import random
+
 class NEURAL_NETWORK: 
 
-    def __init__(self,nndfFileName):
+    def __init__(self,nndfFileName, robotId):
 
         self.neurons = {}
 
         self.synapses = {}
+
+        self.robotId = robotId
+
+        self.prevMotorNeuronValues = {0: 1,
+                                      1: 1,
+                                      2: 1,
+                                      3: 1,
+                                      4: 0,
+                                      5: 0,
+                                      6: 0,
+                                      7: 0}
 
         f = open(nndfFileName,"r")
 
@@ -27,6 +47,46 @@ class NEURAL_NETWORK:
         self.Print_Motor_Neuron_Values()
 
         print("")
+
+    def Update(self):
+
+        for neuronName in self.neurons.keys():
+
+                if self.neurons[neuronName].Is_Sensor_Neuron():
+
+                    # self.neurons[neuronName].Update_Sensor_Neuron()
+
+                    if p.getJointState(self.robotId, int(neuronName))[1] == 0:
+
+                        self.neurons[neuronName].Set_Value(1)
+
+                    else:
+
+                        self.neurons[neuronName].Set_Value(p.getJointState(self.robotId, int(neuronName))[1])
+
+                    print(p.getJointState(self.robotId, int(neuronName))[1])
+
+                else:
+
+                        self.neurons[neuronName].Update_Hidden_Or_Motor_Neuron(self.neurons, self.synapses)
+
+                        # self.prevMotorNeuronValues[int(neuronName)-c.numMotorNeurons] = self.neurons[neuronName].Get_Value()
+
+    def Get_Neuron_Names(self):
+
+        return self.neurons.keys()
+
+    def Is_Motor_Neuron(self, neuronName):
+
+            return self.neurons[neuronName].Is_Motor_Neuron()
+
+    def Get_Joint_Name(self, neuronName):
+
+            return self.neurons[neuronName].Get_Joint_Name()
+
+    def Get_Value(self, neuronName):
+
+            return self.neurons[neuronName].Get_Value()
 
 # ---------------- Private methods --------------------------------------
 
