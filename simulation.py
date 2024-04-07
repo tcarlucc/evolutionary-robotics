@@ -34,8 +34,6 @@ class SIMULATION:
                                              computeLinkVelocity=1)[6]))
                 local_coords = p.getLinkState(self.robot.robotId, linkIndex)[2]
                 p.applyExternalForce(self.robot.robotId, linkIndex, velocity_vector, local_coords, p.LINK_FRAME)
-
-            # p.applyExternalForce(self.robot.robotId, -1, self.Calculate_Drag(), [1, 1, 1], p.LINK_FRAME)  # Reference
             if self.directOrGUI == "GUI":
                 time.sleep(1 / 60)
 
@@ -47,6 +45,5 @@ class SIMULATION:
         self.robot.Get_Fitness()
 
     def Calculate_Drag(self, velocity_vector):
-        velocity = np.linalg.norm(velocity_vector)
-        drag = 0.5 * c.fluidDensity * 0.2 * c.dragCoefficient * velocity ** 2
-        return drag
+        return 0.5 * c.fluidDensity * 0.2 * c.dragCoefficient * velocity_vector ** 2
+
