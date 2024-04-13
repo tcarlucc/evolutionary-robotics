@@ -26,6 +26,8 @@ class SIMULATION:
             self.robot.Sense(i)
             self.robot.Think()
             self.robot.Act(i)
+            if i < 10:
+                p.applyExternalForce(self.robot.robotId, 0, (0, 0, 10), (0, 0, 0), p.LINK_FRAME)
             for linkIndex in range(p.getNumJoints(self.robot.robotId)):
                 velocity_vector = self.Calculate_Drag(np.asarray(p.getLinkState(self.robot.robotId, linkIndex,
                                              computeLinkVelocity=1)[6]))

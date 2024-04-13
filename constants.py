@@ -13,8 +13,8 @@ backLegPhaseOffset = 0
 numberOfGenerations = 1
 populationSize = 1
 
-numSensorNeurons = 8
-numHiddenNeurons = 8
+numSensorNeurons = 13
+numHiddenNeurons = 4
 numMotorNeurons = 8
 
 motorJointRange = 0.4
