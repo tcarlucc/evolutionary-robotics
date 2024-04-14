@@ -93,14 +93,11 @@ class SOLUTION:
         for i in range(c.numSensorNeurons, c.numSensorNeurons + c.numHiddenNeurons):
             pyrosim.Send_Hidden_Neuron(name=i)
 
-        pyrosim.Send_Motor_Neuron(name=17, jointName="Torso_BackLeg")
-        pyrosim.Send_Motor_Neuron(name=18, jointName="Torso_FrontLeg")
-        pyrosim.Send_Motor_Neuron(name=19, jointName="Torso_LeftLeg")
-        pyrosim.Send_Motor_Neuron(name=20, jointName="Torso_RightLeg")
-        pyrosim.Send_Motor_Neuron(name=21, jointName="BackLeg_BackLowerLeg")
-        pyrosim.Send_Motor_Neuron(name=22, jointName="FrontLeg_FrontLowerLeg")
-        pyrosim.Send_Motor_Neuron(name=23, jointName="LeftLeg_LeftLowerLeg")
-        pyrosim.Send_Motor_Neuron(name=24, jointName="RightLeg_RightLowerLeg")
+        jointNames = ["Torso_BackLeg", "Torso_FrontLeg", "Torso_LeftLeg", "Torso_RightLeg", "BackLeg_BackLowerLeg",
+                      "FrontLeg_FrontLowerLeg", "LeftLeg_LeftLowerLeg", "RightLeg_RightLowerLeg"]
+
+        for i in range(c.numSensorNeurons+c.numHiddenNeurons, c.numSensorNeurons+c.numHiddenNeurons+c.numMotorNeurons):
+            pyrosim.Send_Motor_Neuron(name=i, jointName=jointNames[i-(c.numSensorNeurons+c.numHiddenNeurons)])
 
         for currentRow in range(0, c.numSensorNeurons):
             for currentColumn in range(0, c.numHiddenNeurons):
