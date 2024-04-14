@@ -30,7 +30,7 @@ class SIMULATION:
                 p.applyExternalForce(self.robot.robotId, 0, (0, 0, 10), (0, 0, 0), p.LINK_FRAME)
             for linkIndex in range(p.getNumJoints(self.robot.robotId)):
                 velocity_vector = self.Calculate_Drag(np.asarray(p.getLinkState(self.robot.robotId, linkIndex,
-                                             computeLinkVelocity=1)[6]))
+                                             computeLinkVelocity=1)[6]), linkIndex)
                 local_coords = p.getLinkState(self.robot.robotId, linkIndex)[2]
                 p.applyExternalForce(self.robot.robotId, linkIndex, velocity_vector, local_coords, p.LINK_FRAME)
             if self.directOrGUI == "GUI":
@@ -43,8 +43,12 @@ class SIMULATION:
     def Get_Fitness(self):
         self.robot.Get_Fitness()
 
-    def Calculate_Drag(self, velocity_vector):
-        # Drag calculation from: F. Corucci (2018) "Evolving Soft Locomotion"
-        # 0.2 is Area of each link
-        return 0.5 * c.fluidDensity * 0.2 * c.dragCoefficient * velocity_vector ** 2
+    def Calculate_Drag(self, velocity_vector, linkIndex):
+        # Drag calculation from: F. Corucci et al. (2018) "Evolving Soft Locomotion"
+        if linkIndex == 0:
+            # 1.0 is Area of the torso
+            return 0.5 * c.fluidDensity * 1.0 * c.dragCoefficient * velocity_vector ** 2
+        else:
+            # 0.2 is Area of each link
+            return 0.5 * c.fluidDensity * 0.2 * c.dragCoefficient * velocity_vector ** 2
 
