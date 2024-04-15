@@ -26,13 +26,14 @@ class SIMULATION:
             self.robot.Sense(i)
             self.robot.Think()
             self.robot.Act(i)
-            if i < 10:
-                p.applyExternalForce(self.robot.robotId, 0, (0, 0, 10), (0, 0, 0), p.LINK_FRAME)
             for linkIndex in range(p.getNumJoints(self.robot.robotId)):
                 velocity_vector = self.Calculate_Drag(np.asarray(p.getLinkState(self.robot.robotId, linkIndex,
                                              computeLinkVelocity=1)[6]), linkIndex)
                 local_coords = p.getLinkState(self.robot.robotId, linkIndex)[2]
                 p.applyExternalForce(self.robot.robotId, linkIndex, velocity_vector, local_coords, p.LINK_FRAME)
+            if i % 5 == 0:
+                pass
+                #p.applyExternalForce(self.robot.robotId, 0, (0, 5, 0), (0, 0.5, 0), p.WORLD_FRAME)  # 'Stream' of air
             if self.directOrGUI == "GUI":
                 time.sleep(1 / 60)
 

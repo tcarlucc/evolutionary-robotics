@@ -26,12 +26,6 @@ class ROBOT:
             self.sensors[linkName] = SENSOR(linkName)
 
     def Sense(self, t):
-        """for linkName, sensor in self.sensors.items():
-            value = np.linalg.norm(p.getLinkState(self.robotId, sensor.linkIndex, computeLinkVelocity=1)[6])
-            self.sensors[sensor].Set_Value(t, value)"""
-        """for linkIndex in range(p.getNumJoints(self.robotId)):
-            value = np.linalg.norm(p.getLinkState(self.robotId, linkIndex, computeLinkVelocity=1)[6])
-            self.sensors[pyrosim.linkNamesToIndices[linkIndex]].Set_Value(t, value)"""
         for linkName in self.sensors:
             self.sensors[linkName].Set_Value(t, 1)
 
@@ -51,11 +45,10 @@ class ROBOT:
         self.nn.Update()
 
     def Get_Fitness(self):
-        stateOfLinkZero = p.getLinkState(self.robotId, 0, computeLinkVelocity=1)
-        positionOfLinkZero = stateOfLinkZero[6]
-        yCoordinateOfLinkZero = positionOfLinkZero[0]
+        stateOfLinkZero = p.getLinkState(self.robotId, 0)
+        dist_from_origin = np.sqrt(stateOfLinkZero[0][0] ** 2 + stateOfLinkZero[0][1] ** 2 + stateOfLinkZero[0][2] ** 2)
 
         file = open(f"tmp{self.solutionID}.txt", "w")
-        file.write(str(yCoordinateOfLinkZero))
+        file.write(str(dist_from_origin))
         file.close()
         os.rename(f"tmp{self.solutionID}.txt", f"fitness{self.solutionID}.txt")

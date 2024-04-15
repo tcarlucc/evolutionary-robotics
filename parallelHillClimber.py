@@ -48,12 +48,12 @@ class PARALLEL_HILL_CLIMBER:
             print(f"Parent Fitness: {self.parents[parent].fitness}, Child Fitness: {self.children[parent].fitness}")
 
     def Show_Best(self):
-        min = 10
+        curr = float('inf')
         best_parent = None
         for parent in self.parents.keys():
             num = self.parents[parent].fitness
-            if num < min:
-                min = num
+            if num < curr:
+                curr = num
                 best_parent = parent
         self.parents[best_parent].Start_Simulation("GUI")
 

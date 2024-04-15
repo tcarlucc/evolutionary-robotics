@@ -114,13 +114,26 @@ class SOLUTION:
         pyrosim.End()
 
     def Mutate(self):
-        row = random.randint(0, c.numSensorNeurons - 1)
+        """row = random.randint(0, c.numSensorNeurons - 1)
         col = random.randint(0, c.numHiddenNeurons - 1)
         self.sensor_to_hidden_weights[row, col] = (random.random() * 2) - 1
 
         row = random.randint(0, c.numHiddenNeurons - 1)
         col = random.randint(0, c.numMotorNeurons - 1)
         self.hidden_to_motor_weights[row, col] = (random.random() * 2) - 1
+        """
+        ih_synapses_to_mutate = random.randint(0, c.numSensorNeurons * c.numHiddenNeurons)
+        for i in range(ih_synapses_to_mutate):
+            row = random.randint(0, c.numSensorNeurons - 1)
+            col = random.randint(0, c.numHiddenNeurons - 1)
+            self.sensor_to_hidden_weights[row, col] = (random.random() * 2) - 1
+
+        hm_synapses_to_mutate = random.randint(0, c.numHiddenNeurons * c.numMotorNeurons)
+        for i in range(hm_synapses_to_mutate):
+            row = random.randint(0, c.numHiddenNeurons - 1)
+            col = random.randint(0, c.numMotorNeurons - 1)
+            self.hidden_to_motor_weights[row, col] = (random.random() * 2) - 1
+
 
     def Set_ID(self, myID):
         self.myID = myID
