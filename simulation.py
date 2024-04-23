@@ -32,8 +32,7 @@ class SIMULATION:
                 local_coords = p.getLinkState(self.robot.robotId, linkIndex)[2]
                 p.applyExternalForce(self.robot.robotId, linkIndex, velocity_vector, local_coords, p.LINK_FRAME)
             if i % 5 == 0:
-                pass
-                #p.applyExternalForce(self.robot.robotId, 0, (0, 5, 0), (0, 0.5, 0), p.WORLD_FRAME)  # 'Stream' of air
+                p.applyExternalForce(self.robot.robotId, 0, (0, 5, 0), (0, 5, 0), p.WORLD_FRAME)  # 'Stream'
             if self.directOrGUI == "GUI":
                 time.sleep(1 / 60)
 
@@ -48,7 +47,7 @@ class SIMULATION:
         # Drag calculation from: F. Corucci et al. (2018) "Evolving Soft Locomotion"
         if linkIndex == 0:
             # 1.0 is Area of the torso
-            return 0.5 * c.fluidDensity * 1.0 * c.dragCoefficient * velocity_vector ** 2
+            return 0.5 * c.fluidDensity * 0.47 * c.dragCoefficient * velocity_vector ** 2
         else:
             # 0.2 is Area of each link
             return 0.5 * c.fluidDensity * 0.2 * c.dragCoefficient * velocity_vector ** 2
