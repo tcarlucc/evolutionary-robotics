@@ -38,7 +38,7 @@ class SIMULATION:
             if i % 5 == 0:
                 #for j in range(len(pyrosim.linkNamesToIndices) - 1):
                 for j in range(p.getNumJoints(self.robot.robotId)):
-                    p.applyExternalForce(self.robot.robotId, j, (0, 0.55, 0), (0, 0, 0), p.WORLD_FRAME)  # 'Stream'
+                    p.applyExternalForce(self.robot.robotId, j, (0, 0.65, 0), (0, 0, 0), p.WORLD_FRAME)  # 'Stream'
             if self.directOrGUI == "GUI":
                 time.sleep(1 / 60)
 
@@ -60,8 +60,8 @@ class SIMULATION:
 
     def Calc_Displacement(self):
         linkState = p.getLinkState(self.robot.robotId, 0, computeLinkVelocity=1)
-        # Calculate distance from spawnpoint (0, 0, 2) over time
-        self.totalDisplacement += np.sqrt(linkState[0][0] ** 2 + linkState[0][1] ** 2 + (2 - linkState[0][2]) ** 2)
+        # Calculate distance from spawnpoint (0, 0, 3) over time
+        self.totalDisplacement += np.sqrt(linkState[0][0] ** 2 + linkState[0][1] ** 2 + (3 - linkState[0][2]) ** 2)
 
     def Calc_Angular_Velocity_Displacement(self):
         linkState = p.getLinkState(self.robot.robotId, 0, computeLinkVelocity=1)
