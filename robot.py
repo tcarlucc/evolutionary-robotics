@@ -45,13 +45,15 @@ class ROBOT:
         self.nn.Print()
         self.nn.Update()
 
-    def Get_Fitness(self):
+    def Get_Fitness(self, displacement):
+        """ Old Fitness Code. Calculates displacement at end of simulation
         stateOfLinkZero = p.getLinkState(self.robotId, 0, computeLinkVelocity=1)
-        # Minimize distance from origin and angular velocity
-        dist_from_origin = np.sqrt(stateOfLinkZero[0][0] ** 2 + stateOfLinkZero[0][1] ** 2 + stateOfLinkZero[0][2] ** 2)
-        ang_vel = np.sqrt(stateOfLinkZero[7][0] ** 2 + stateOfLinkZero[7][1] ** 2 + stateOfLinkZero[7][2] ** 2)
-
+        # Minimize distance from C.O.M. spawnpoint (0, 0, 2) over time
+        dist_from_origin = np.sqrt(stateOfLinkZero[0][0] ** 2 +
+                                   stateOfLinkZero[0][1] ** 2 +
+                                   (2 - stateOfLinkZero[0][2]) ** 2)
+       """
         file = open(f"tmp{self.solutionID}.txt", "w")
-        file.write(str(dist_from_origin))
+        file.write(str(displacement))
         file.close()
         os.rename(f"tmp{self.solutionID}.txt", f"fitness{self.solutionID}.txt")
