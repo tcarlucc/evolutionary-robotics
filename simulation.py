@@ -20,6 +20,7 @@ class SIMULATION:
         self.world = WORLD()
         self.robot = ROBOT(solutionID)
         self.totalDisplacement = 0
+        self.angularDisplacement = 0
 
     def Run(self):
         for i in range(c.ITERATIONS):
@@ -33,8 +34,11 @@ class SIMULATION:
                 local_coords = p.getLinkState(self.robot.robotId, linkIndex)[2]
                 p.applyExternalForce(self.robot.robotId, linkIndex, velocity_vector, local_coords, p.LINK_FRAME)
             self.Calc_Displacement()
+            self.Calc_Angular_Velocity_Displacement()
             if i % 5 == 0:
-                p.applyExternalForce(self.robot.robotId, 0, (0, 5, 0), (0, 5, 0), p.WORLD_FRAME)  # 'Stream'
+                #for j in range(len(pyrosim.linkNamesToIndices) - 1):
+                for j in range(p.getNumJoints(self.robot.robotId)):
+                    p.applyExternalForce(self.robot.robotId, j, (0, 0.55, 0), (0, 0, 0), p.WORLD_FRAME)  # 'Stream'
             if self.directOrGUI == "GUI":
                 time.sleep(1 / 60)
 
@@ -43,7 +47,7 @@ class SIMULATION:
         p.disconnect()
 
     def Get_Fitness(self):
-        self.robot.Get_Fitness(self.totalDisplacement)
+        self.robot.Get_Fitness(self.totalDisplacement, self.angularDisplacement)
 
     def Calculate_Drag(self, velocity_vector, linkIndex):
         # Drag calculation from: F. Corucci et al. (2018) "Evolving Soft Locomotion"
@@ -58,3 +62,7 @@ class SIMULATION:
         linkState = p.getLinkState(self.robot.robotId, 0, computeLinkVelocity=1)
         # Calculate distance from spawnpoint (0, 0, 2) over time
         self.totalDisplacement += np.sqrt(linkState[0][0] ** 2 + linkState[0][1] ** 2 + (2 - linkState[0][2]) ** 2)
+
+    def Calc_Angular_Velocity_Displacement(self):
+        linkState = p.getLinkState(self.robot.robotId, 0, computeLinkVelocity=1)
+        self.angularDisplacement += np.sqrt(linkState[7][0] ** 2 + linkState[7][1] ** 2 + linkState[7][2] ** 2)

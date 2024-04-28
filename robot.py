@@ -42,10 +42,10 @@ class ROBOT:
                 self.motors[jointName].Set_Value(self.robotId, desiredAngle)
 
     def Think(self):
-        self.nn.Print()
+        # self.nn.Print()
         self.nn.Update()
 
-    def Get_Fitness(self, displacement):
+    def Get_Fitness(self, displacement, angularDisplacement):
         """ Old Fitness Code. Calculates displacement at end of simulation
         stateOfLinkZero = p.getLinkState(self.robotId, 0, computeLinkVelocity=1)
         # Minimize distance from C.O.M. spawnpoint (0, 0, 2) over time
@@ -54,6 +54,8 @@ class ROBOT:
                                    (2 - stateOfLinkZero[0][2]) ** 2)
        """
         file = open(f"tmp{self.solutionID}.txt", "w")
-        file.write(str(displacement))
+        print(f"Displacement: {displacement}")
+        print(f"angularDisplacement: {angularDisplacement}")
+        file.write(str((displacement + angularDisplacement) / c.ITERATIONS))
         file.close()
         os.rename(f"tmp{self.solutionID}.txt", f"fitness{self.solutionID}.txt")
