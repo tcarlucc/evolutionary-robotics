@@ -1,6 +1,6 @@
 import numpy as np
 
-ITERATIONS = 2500
+ITERATIONS = 3000
 
 frontLegAmplitude = np.pi / 3
 frontLegFrequency = 20
