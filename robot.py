@@ -41,9 +41,9 @@ class ROBOT:
                 desiredAngle = self.nn.neurons[neuronName].Get_Value() * c.motorJointRange
                 self.motors[jointName].Set_Value(self.robotId, desiredAngle)
 
-    def Think(self):
+    def Think(self, t):
         # self.nn.Print()
-        self.nn.Update()
+        self.nn.Update(t)
 
     def Get_Fitness(self, displacement, angularDisplacement):
         """ Old Fitness Code. Calculates displacement at end of simulation

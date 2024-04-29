@@ -26,7 +26,7 @@ class SIMULATION:
         for i in range(c.ITERATIONS):
             p.stepSimulation()
             self.robot.Sense(i)
-            self.robot.Think()
+            self.robot.Think(i)
             self.robot.Act(i)
             for linkIndex in range(p.getNumJoints(self.robot.robotId)):
                 velocity_vector = self.Calculate_Drag(np.asarray(p.getLinkState(self.robot.robotId, linkIndex,
