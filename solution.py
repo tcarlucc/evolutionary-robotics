@@ -20,10 +20,7 @@ class SOLUTION:
         self.myID = myID
 
     def Evaluate(self, directOrGUI):
-        self.Create_World()
-        self.Generate_Body()
-        self.Generate_Brain()
-        os.system(f'start /B py simulate.py {directOrGUI} {str(self.myID)}')
+        self.Start_Simulation(directOrGUI)
         fitnessFileName = f"fitness{str(self.myID)}"
         while not os.path.exists(fitnessFileName):
             time.sleep(0.01)
@@ -33,7 +30,7 @@ class SOLUTION:
         fitnessFile.close()
 
     def Start_Simulation(self, directOrGUI):
-        self.Create_World()
+        self.Generate_World()
         self.Generate_Body()
         self.Generate_Brain()
         os.system(f"start /B python simulate.py {directOrGUI} {str(self.myID)}")
@@ -46,7 +43,7 @@ class SOLUTION:
         file.close()
         os.system(f"del fitness{self.myID}.txt")
 
-    def Create_World(self):
+    def Generate_World(self):
         pyrosim.Start_SDF("world.sdf")
         # pyrosim.Send_Cube(name="Box", pos=[-2, 2, 0.5], size=[1, 1, 1])  # Artifact from intro to pybullet
         # pyrosim.Send_Sphere(name="Ball", pos=[0, 0, 1], radius=0.5)      # Testing for sphere implementation
@@ -55,11 +52,11 @@ class SOLUTION:
     def Generate_Body(self):
         pyrosim.Start_URDF("body.urdf")
 
-        pyrosim.Send_Cube(name="Torso", pos=[0, 0, 5], size=[1, 1, 1],mass=1)
+        pyrosim.Send_Cube(name="Torso", pos=[0, 0, 10], size=[1, 1, 1],mass=1)
 
         # Back Legs
         pyrosim.Send_Cube(name="BackLeg", pos=[0, -0.5, 0], size=[0.2, 1, 0.2],mass=1)
-        pyrosim.Send_Joint(name="Torso_BackLeg", parent="Torso", child="BackLeg", position=[0, -0.5, 4.6],
+        pyrosim.Send_Joint(name="Torso_BackLeg", parent="Torso", child="BackLeg", position=[0, -0.5, 9.6],
                            type="revolute", jointAxis="1 0 0")
         pyrosim.Send_Cube(name="BackLowerLeg", pos=[0, 0, -0.5], size=[0.2, 0.2, 1],mass=1)
         pyrosim.Send_Joint(name="BackLeg_BackLowerLeg", parent="BackLeg", child="BackLowerLeg", position=[0, -1, 0],
@@ -67,7 +64,7 @@ class SOLUTION:
 
         # Front Legs
         pyrosim.Send_Cube(name="FrontLeg", pos=[0, 0.5, 0], size=[0.2, 1, 0.2],mass=1)
-        pyrosim.Send_Joint(name="Torso_FrontLeg", parent="Torso", child="FrontLeg", position=[0, 0.5, 4.6],
+        pyrosim.Send_Joint(name="Torso_FrontLeg", parent="Torso", child="FrontLeg", position=[0, 0.5, 9.6],
                            type="revolute", jointAxis="1 0 0")
         pyrosim.Send_Cube(name="FrontLowerLeg", pos=[0, 0, -0.5], size=[0.2, 0.2, 1],mass=1)
         pyrosim.Send_Joint(name="FrontLeg_FrontLowerLeg", parent="FrontLeg", child="FrontLowerLeg",
@@ -75,7 +72,7 @@ class SOLUTION:
 
         # Left Legs
         pyrosim.Send_Cube(name="LeftLeg", pos=[-0.5, 0, 0], size=[1, 0.2, 0.2],mass=1)
-        pyrosim.Send_Joint(name="Torso_LeftLeg", parent="Torso", child="LeftLeg", position=[-0.5, 0, 4.6],
+        pyrosim.Send_Joint(name="Torso_LeftLeg", parent="Torso", child="LeftLeg", position=[-0.5, 0, 9.6],
                            type="revolute", jointAxis="0 1 0")
         pyrosim.Send_Cube(name="LeftLowerLeg", pos=[0, 0, -0.5], size=[0.2, 0.2, 1],mass=1)
         pyrosim.Send_Joint(name="LeftLeg_LeftLowerLeg", parent="LeftLeg", child="LeftLowerLeg", position=[-1, 0, 0],
@@ -83,7 +80,7 @@ class SOLUTION:
 
         # Right Legs
         pyrosim.Send_Cube(name="RightLeg", pos=[0.5, 0, 0], size=[1, 0.2, 0.2],mass=1)
-        pyrosim.Send_Joint(name="Torso_RightLeg", parent="Torso", child="RightLeg", position=[0.5, 0, 4.6],
+        pyrosim.Send_Joint(name="Torso_RightLeg", parent="Torso", child="RightLeg", position=[0.5, 0, 9.6],
                            type="revolute", jointAxis="0 1 0")
         pyrosim.Send_Cube(name="RightLowerLeg", pos=[0, 0, -0.5], size=[0.2, 0.2, 1],mass=1)
         pyrosim.Send_Joint(name="RightLeg_RightLowerLeg", parent="RightLeg", child="RightLowerLeg", position=[1, 0, 0],
