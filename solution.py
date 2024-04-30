@@ -43,12 +43,13 @@ class SOLUTION:
     def Create_World(self):
         pyrosim.Start_SDF("world.sdf")
         # pyrosim.Send_Cube(name="Box", pos=[-2, 2, 0.5], size=[1, 1, 1])  # Artifact from intro to pybullet
+        pyrosim.Send_Sphere(name="Ball", pos=[0, 0, 1], radius=0.5)
         pyrosim.End()
 
     def Generate_Body(self):
         pyrosim.Start_URDF("body.urdf")
 
-        pyrosim.Send_Cube(name="Torso", pos=[0, 0, 5], size=[1, 1, 1])
+        pyrosim.Send_Sphere(name="Torso", pos=[0, 0, 5], radius=1)
 
         # Back Legs
         pyrosim.Send_Cube(name="BackLeg", pos=[0, -0.5, 0], size=[0.2, 1, 0.2])
