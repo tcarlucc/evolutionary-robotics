@@ -45,13 +45,13 @@ class PARALLEL_HILL_CLIMBER:
                 self.parents[parent] = self.children[parent]
 
         try:
-            fitnessTrend = np.load('data/LeanFitnessTrend.npy')
+            fitnessTrend = np.load('data/BulkyFitnessTrend.npy')
             fitnessTrend = np.append(fitnessTrend, [self.parents[self.Find_Best_Parent()].fitness])
-            np.save('data/LeanFitnessTrend.npy', fitnessTrend)
+            np.save('data/BulkyFitnessTrend.npy', fitnessTrend)
             print(fitnessTrend)
         except FileNotFoundError:
             fitnessTrend = np.array([self.parents[self.Find_Best_Parent()].fitness])
-            np.save('data/LeanFitnessTrend.npy', fitnessTrend)
+            np.save('data/BulkyFitnessTrend.npy', fitnessTrend)
         np.save('data/bestSensorToHidden.npy', self.parents[self.Find_Best_Parent()].sensor_to_hidden_weights)
         np.save('data/bestHiddenToMotor.npy', self.parents[self.Find_Best_Parent()].hidden_to_motor_weights)
 
