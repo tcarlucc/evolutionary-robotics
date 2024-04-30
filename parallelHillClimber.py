@@ -3,6 +3,7 @@ from solution import SOLUTION
 import constants as c
 import copy
 import os
+import numpy as np
 
 
 class PARALLEL_HILL_CLIMBER:
@@ -56,6 +57,8 @@ class PARALLEL_HILL_CLIMBER:
                 curr = num
                 best_parent = parent
         self.parents[best_parent].Start_Simulation("GUI")
+        np.save('data/bestSensorToHidden.npy', self.parents[best_parent].sensor_to_hidden_weights)
+        np.save('data/bestHiddenToMotor.npy', self.parents[best_parent].hidden_to_motor_weights)
 
     def Evaluate(self, solutions):
         for solution in solutions.keys():

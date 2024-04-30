@@ -15,6 +15,8 @@ class SIMULATION:
             self.physicsClient = p.connect(p.DIRECT)
         else:
             self.physicsClient = p.connect(p.GUI)
+        p.resetDebugVisualizerCamera(cameraDistance=1, cameraYaw=0, cameraPitch=-10, cameraTargetPosition=[0, -5, 4])
+
         p.setAdditionalSearchPath(pybullet_data.getDataPath())
         p.setGravity(0, 0, 0)  # z = -9.8 to enable gravity
         self.world = WORLD()
@@ -36,7 +38,6 @@ class SIMULATION:
             self.Calc_Displacement()
             self.Calc_Angular_Velocity_Displacement()
             if i % 5 == 0:
-                #for j in range(len(pyrosim.linkNamesToIndices) - 1):
                 for j in range(p.getNumJoints(self.robot.robotId)):
                     p.applyExternalForce(self.robot.robotId, j, (0, 0, -1), (0, 0, 0), p.WORLD_FRAME)  # 'Stream'
             if self.directOrGUI == "GUI":
@@ -60,7 +61,7 @@ class SIMULATION:
 
     def Calc_Displacement(self):
         linkState = p.getLinkState(self.robot.robotId, 0, computeLinkVelocity=1)
-        # Calculate distance from spawnpoint (0, 0, 3) over time
+        # Calculate distance from spawnpoint (0, 0, 5) over time
         self.totalDisplacement += np.sqrt(linkState[0][0] ** 2 + linkState[0][1] ** 2 + (5 - linkState[0][2]) ** 2)
 
     def Calc_Angular_Velocity_Displacement(self):
