@@ -10,8 +10,8 @@ backLegAmplitude = np.pi/3
 backLegFrequency = 10
 backLegPhaseOffset = 0
 
-numberOfGenerations = 10
-populationSize = 10
+numberOfGenerations = 1
+populationSize = 1
 
 numSensorNeurons = 31
 numHiddenNeurons = 8

@@ -106,7 +106,7 @@ def Prepare_To_Simulate(bodyID):
 
     Prepare_Joint_Dictionary(bodyID)
 
-def Send_Cube(name="default",pos=[0,0,0],size=[1,1,1]):
+def Send_Link(name="default",pos=[0,0,0],size=[1,1,1], objectType='box', mass=1.0):
 
     global availableLinkIndex
 
@@ -116,11 +116,11 @@ def Send_Cube(name="default",pos=[0,0,0],size=[1,1,1]):
 
         Start_Model(name,pos)
 
-        link = LINK_SDF(name,pos,size)
+        link = LINK_SDF(name,pos,size,objectType,mass)
 
         links.append(link)
     else:
-        link = LINK_URDF(name,pos,size)
+        link = LINK_URDF(name,pos,size,mass)
 
         links.append(link)
 
@@ -133,6 +133,14 @@ def Send_Cube(name="default",pos=[0,0,0],size=[1,1,1]):
     linkNamesToIndices[name] = availableLinkIndex
 
     availableLinkIndex = availableLinkIndex + 1
+
+def Send_Cube(name,pos,size,mass=1.0):
+
+        Send_Link(name,pos,size,'box',mass)
+
+def Send_Sphere(name,pos,radius,mass=1.0):
+
+        Send_Link(name,pos,[radius,radius,radius],'sphere',mass)
 
 def Send_Joint(name,parent,child,type,position,jointAxis):
 
@@ -147,6 +155,14 @@ def Send_Motor_Neuron(name,jointName):
 def Send_Sensor_Neuron(name,linkName):
 
     f.write('    <neuron name = "' + str(name) + '" type = "sensor" linkName = "' + linkName + '" />\n')
+
+def Send_Sensor_Neuron(name):
+
+        f.write('    <neuron name = "' + str(name) + '" type = "sensor" />\n')
+
+def Send_Hidden_Neuron(name):
+
+    f.write('    <neuron name = "' + str(name) + '" type = "hidden" />\n')
 
 def Send_Synapse( sourceNeuronName , targetNeuronName , weight ):
 

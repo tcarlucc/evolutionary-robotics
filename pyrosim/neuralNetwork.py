@@ -30,6 +30,10 @@ class NEURAL_NETWORK:
                                       6: 0,
                                       7: 0}
 
+        self.prevLinkState = p.getLinkState(self.robotId, 0, computeLinkVelocity=1)
+
+        self.currentTimeStep = 0
+
         f = open(nndfFileName,"r")
 
         for line in f.readlines():
@@ -48,29 +52,110 @@ class NEURAL_NETWORK:
 
         print("")
 
-    def Update(self):
+    def Update(self, timestep):
 
+        """
+        TODO: Implement Deltas and Acceleration
+        Main idea will be to keep track of the previous timesteps link state and utilize that to calculate rate of
+        change and just general change for the inputs below.
+        """
+
+        linkState = p.getLinkState(self.robotId, 0, computeLinkVelocity=1)
+
+        """ Test A for sensor neurons
+            When changing remember to update constants.py
         for neuronName in self.neurons.keys():
 
                 if self.neurons[neuronName].Is_Sensor_Neuron():
 
-                    # self.neurons[neuronName].Update_Sensor_Neuron()
+                    linkState = p.getLinkState(self.robotId, 0, computeLinkVelocity=1)
 
-                    if p.getJointState(self.robotId, int(neuronName))[1] == 0:
+                    # Position of center of mass neurons
+                    if int(neuronName) < 3:
 
-                        self.neurons[neuronName].Set_Value(1)
+                        self.neurons[neuronName].Set_Value(linkState[0][int(neuronName)])
 
-                    else:
+                    # Orientation of center of mass neurons
+                    elif int(neuronName) < 7:
 
-                        self.neurons[neuronName].Set_Value(p.getJointState(self.robotId, int(neuronName))[1])
+                        self.neurons[neuronName].Set_Value(linkState[1][int(neuronName)-3])
 
-                    print(p.getJointState(self.robotId, int(neuronName))[1])
+                    # Linear velocity of torso neurons
+                    elif int(neuronName) < 10:
+
+                        self.neurons[neuronName].Set_Value(linkState[6][int(neuronName)-7])
+
+                    # Angular velocity of torso neurons
+                    elif int(neuronName) < 13:
+
+                        self.neurons[neuronName].Set_Value(linkState[7][int(neuronName)-10])
 
                 else:
 
-                        self.neurons[neuronName].Update_Hidden_Or_Motor_Neuron(self.neurons, self.synapses)
+                        self.neurons[neuronName].Update_Hidden_Or_Motor_Neuron(self.neurons, self.synapses)"""
 
-                        # self.prevMotorNeuronValues[int(neuronName)-c.numMotorNeurons] = self.neurons[neuronName].Get_Value()
+        """ 
+        Test B for sensor neurons
+        """
+        for neuronName in self.neurons.keys():
+
+
+            # Handle all non-time dependent sensor neurons
+            if self.neurons[neuronName].Is_Sensor_Neuron():
+
+                # Position of center of mass neurons
+                if int(neuronName) < 3:
+                    self.neurons[neuronName].Set_Value(linkState[0][int(neuronName)])
+
+                # Orientation of center of mass neurons
+                elif int(neuronName) < 7:
+                    self.neurons[neuronName].Set_Value(linkState[1][int(neuronName) - 3])
+
+                # Linear velocity of torso neurons
+                elif int(neuronName) < 10:
+                    self.neurons[neuronName].Set_Value(linkState[6][int(neuronName) - 7])
+
+                # Angular velocity of torso neurons
+                elif int(neuronName) < 13:
+                    self.neurons[neuronName].Set_Value(linkState[7][int(neuronName) - 10])
+
+                elif timestep == 0 and int(neuronName) > 12:
+                    self.neurons[neuronName].Set_Value(0)
+
+                elif timestep > 0:
+                    # Acceleration neurons
+                    if int(neuronName) < 16:
+                        self.neurons[neuronName].Set_Value((linkState[6][int(neuronName) - 13] -
+                                                           self.prevLinkState[6][int(neuronName) - 13]))
+
+                    # Angular acceleration neurons
+                    elif int(neuronName) < 19:
+                        self.neurons[neuronName].Set_Value((linkState[7][int(neuronName) - 16] -
+                                                           self.prevLinkState[7][int(neuronName) - 16]))
+
+                    # Delta of position neurons
+                    elif int(neuronName) < 22:
+                        self.neurons[neuronName].Set_Value((linkState[0][int(neuronName) - 19] -
+                                                           self.prevLinkState[0][int(neuronName) - 19]))
+
+                    # Delta of orientation neurons
+                    elif int(neuronName) < 25:
+                        self.neurons[neuronName].Set_Value((linkState[1][int(neuronName) - 22] -
+                                                           self.prevLinkState[1][int(neuronName) - 22]))
+
+                    # Delta of linear velocity neurons
+                    elif int(neuronName) < 28:
+                        self.neurons[neuronName].Set_Value((linkState[6][int(neuronName) - 25] -
+                                                           self.prevLinkState[6][int(neuronName) - 25]))
+                    # Delta of angular velocity neurons
+                    elif int(neuronName) < 31:
+                        self.neurons[neuronName].Set_Value((linkState[7][int(neuronName) - 28] -
+                                                           self.prevLinkState[7][int(neuronName) - 28]))
+
+            else:
+                self.neurons[neuronName].Update_Hidden_Or_Motor_Neuron(self.neurons, self.synapses)
+
+        self.prevLinkState = linkState
 
     def Get_Neuron_Names(self):
 
