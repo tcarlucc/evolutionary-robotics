@@ -41,17 +41,17 @@ class PARALLEL_HILL_CLIMBER:
 
     def Select(self):
         for parent in self.parents.keys():
-            if self.parents[parent].fitness > self.children[parent].fitness:
+            if self.parents[parent].fitness < self.children[parent].fitness:
                 self.parents[parent] = self.children[parent]
 
         try:
-            fitnessTrend = np.load('data/BulkyFitnessTrend.npy')
+            fitnessTrend = np.load('data/LeanFitnessTrend.npy')
             fitnessTrend = np.append(fitnessTrend, [self.parents[self.Find_Best_Parent()].fitness])
-            np.save('data/BulkyFitnessTrend.npy', fitnessTrend)
+            np.save('data/LeanFitnessTrend.npy', fitnessTrend)
             print(fitnessTrend)
         except FileNotFoundError:
             fitnessTrend = np.array([self.parents[self.Find_Best_Parent()].fitness])
-            np.save('data/BulkyFitnessTrend.npy', fitnessTrend)
+            np.save('data/LeanFitnessTrend.npy', fitnessTrend)
         np.save('data/bestSensorToHidden.npy', self.parents[self.Find_Best_Parent()].sensor_to_hidden_weights)
         np.save('data/bestHiddenToMotor.npy', self.parents[self.Find_Best_Parent()].hidden_to_motor_weights)
 
@@ -60,7 +60,6 @@ class PARALLEL_HILL_CLIMBER:
             print(f"Parent Fitness: {self.parents[parent].fitness}, Child Fitness: {self.children[parent].fitness}")
 
     def Show_Best(self):
-        curr = float('inf')
         best_parent = self.Find_Best_Parent()
         self.parents[best_parent].Start_Simulation("GUI")
         np.save('data/bestSensorToHidden.npy', self.parents[best_parent].sensor_to_hidden_weights)
@@ -74,11 +73,11 @@ class PARALLEL_HILL_CLIMBER:
             solutions[solution].Wait_For_Simulation_To_End()
 
     def Find_Best_Parent(self):
-        curr = float('inf')
+        curr = float('-inf')
         best_parent = self.parents[0]
         for parent in self.parents.keys():
             num = self.parents[parent].fitness
-            if num < curr:
+            if num > curr:
                 curr = num
                 best_parent = parent
         return best_parent

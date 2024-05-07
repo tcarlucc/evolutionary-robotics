@@ -57,6 +57,6 @@ class ROBOT:
         print(f"Displacement: {displacement}")
         print(f"angularDisplacement: {angularDisplacement}")
         # file.write(str((displacement + angularDisplacement) / c.ITERATIONS))
-        file.write(str(displacement + angularDisplacement))
+        file.write(str(1/(displacement / c.ITERATIONS)))
         file.close()
         os.rename(f"tmp{self.solutionID}.txt", f"fitness{self.solutionID}.txt")

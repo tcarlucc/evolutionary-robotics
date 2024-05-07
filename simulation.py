@@ -39,7 +39,7 @@ class SIMULATION:
             self.Calc_Angular_Velocity_Displacement()
             if i % 5 == 0:
                 for j in range(p.getNumJoints(self.robot.robotId)):
-                    p.applyExternalForce(self.robot.robotId, j, (0, 0, -1), (0, 0, 0), p.WORLD_FRAME)  # 'Stream'
+                    p.applyExternalForce(self.robot.robotId, j, (0, 0, -1.2), (0, 0, 0), p.WORLD_FRAME)  # 'Stream'
             if self.directOrGUI == "GUI":
                 time.sleep(1 / 60)
 

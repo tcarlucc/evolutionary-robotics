@@ -63,7 +63,8 @@ class NEURAL_NETWORK:
         linkState = p.getLinkState(self.robotId, 0, computeLinkVelocity=1)
 
         """ Test A for sensor neurons
-            When changing remember to update constants.py
+            When changing remember to update constants.py"""
+        """
         for neuronName in self.neurons.keys():
 
                 if self.neurons[neuronName].Is_Sensor_Neuron():
@@ -92,11 +93,13 @@ class NEURAL_NETWORK:
 
                 else:
 
-                        self.neurons[neuronName].Update_Hidden_Or_Motor_Neuron(self.neurons, self.synapses)"""
+                        self.neurons[neuronName].Update_Hidden_Or_Motor_Neuron(self.neurons, self.synapses)
+                """
 
         """ 
         Test B for sensor neurons
         """
+
         for neuronName in self.neurons.keys():
 
 
@@ -154,6 +157,7 @@ class NEURAL_NETWORK:
 
             else:
                 self.neurons[neuronName].Update_Hidden_Or_Motor_Neuron(self.neurons, self.synapses)
+
 
         self.prevLinkState = linkState
 
